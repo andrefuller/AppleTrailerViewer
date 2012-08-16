@@ -1,0 +1,41 @@
+<div class="trailerView">
+    <ul class="breadcrumb">
+        <li>
+            <a href="#">Home</a> <span class="divider">/</span>
+        </li>
+        <li class="active"><%= trailer.title %></li>
+    </ul>
+    <div>
+        <h1><%= trailer.title %> <small><%= trailer.rating %></small> </h1>
+        <h4><%= trailer.studio %></h4>
+        <div class="pull-right"><h5>In theaters: <small><%= trailer.releaseDateTxt %></small></h5></div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="span4">
+            <img src="<%= trailer.posterXLarge %>" alt="<%= trailer.title %>">
+        </div>
+        <div class="span8">
+            <dl class="dl-horizontal">
+                <dt>Genre:</dt>
+                <dd><%= trailer.genre %></dd>
+
+                <dt>Director:</dt>
+                <dd><%= trailer.directors %></dd>
+
+                <dt>Cast:</dt>
+                <dd><%= trailer.actors %></dd>
+
+                <% if( trailer.moviesite !== undefined ) { %>
+                <dt></dt>
+                <dd>
+                    <a href="<%= trailer.moviesite %>" target="_blank" class="btn btn-warning">
+                        <i class="icon-chevron-right"></i> View Movie Site
+                    </a>
+                </dd>
+                <% } %>
+            </dl>
+        </div>
+    </div>
+
+</div>
