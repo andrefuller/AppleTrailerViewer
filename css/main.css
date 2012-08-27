@@ -7,6 +7,14 @@ body {
     text-align: center;
 }
 
+.trailerView h2 .badge {
+	font-size: 20px;
+}
+
+.trailerView header .btn-success {
+	margin-top: -60px;
+}
+
 /* Jumbotrons
 -------------------------------------------------- */
 .jumbotron {
