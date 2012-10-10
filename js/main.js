@@ -21,7 +21,6 @@ requirejs.config({
         underscore              : "libs/underscore/underscore-min",
 
         backbone                : "libs/backbone/backbone-min",
-        backboneRelational      : "libs/backbone/plugins/backbone-relational",
         backbonePaginator       : "libs/backbone/plugins/backbone-paginator-min",
 
         bootstrap               : "libs/bootstrap/bootstrap.min",
