@@ -41,10 +41,11 @@ define([
 	        posterUrl  = splitUrlArr[0];
 	        posterExtension  = splitUrlArr[1];
 
-            self.set( { posterLarge: posterUrl + posterAttribute + '-large' + posterExtension } );
-            self.set( { posterXLarge: posterUrl + posterAttribute + '-xlarge' + posterExtension } );
-
-	        self.set( { backgroundImg: trailerSitePrefix + trailerLocation + 'images/background.jpg' } );
+            self.set({
+	            posterLarge: posterUrl + posterAttribute + '-large' + posterExtension,
+	            posterXLarge: posterUrl + posterAttribute + '-xlarge' + posterExtension,
+	            backgroundImg: trailerSitePrefix + trailerLocation + 'images/background.jpg'
+	        });
 
             // Parse release date
 	        rDate  = self.get( 'releasedate' );
@@ -67,22 +68,25 @@ define([
 			    self.set( { castListTxt: castList.toString().split( ',' ).join( ', ' ) } );
 		    }
 
-	        trailerDescList = self.get('trailers');
+	        trailerDescList = self.get( 'trailers' );
 
 	        // Sometimes the trailer list is just a single object... so make it into an array
-	        if( _.isArray( trailerDescList ) === false )
+	        if( _.isArray( trailerDescList ) === false ){
 		        trailerDescList = [ trailerDescList ];
+	        }
 
 	        for( i=0; i < trailerDescList.length; i++ ){
 		        trailerDesc = trailerDescList[ i ];
+
+		        // Detect whether the trailer is exclusive
+		        if( !isAnyTrailerExclusive && trailerDesc.exclusive === "true" ){
+			        isAnyTrailerExclusive = true;
+		        }
 
 		        previewNameSplit = trailerLocation.split( '/' );
 		        previewName = '/movies/' + previewNameSplit[ previewNameSplit.length - 3 ];
 		        previewName += '/' + previewNameSplit[ previewNameSplit.length - 2 ];
 		        previewName += '/' + previewNameSplit[ previewNameSplit.length - 2 ];
-
-		        if( !isAnyTrailerExclusive && trailerDesc.exclusive === "true" )
-			        isAnyTrailerExclusive = true;
 
 		        switch( trailerDesc.type ){
 			        case( "Featurette" ):
@@ -100,6 +104,7 @@ define([
 				        break;
 		        }
 
+		        // Format Trailer Video Url
 		        trailerList.push({
 			        videoType: trailerDesc.type,
 			        videoSmall: trailerSitePrefix + previewName + trailerTypePrefix + '480p.mov',
@@ -108,11 +113,11 @@ define([
 		        });
 	        }
 
-	        // Detect whether the trailer is exclusive
-	       self.set( { isExclusive: isAnyTrailerExclusive } );
 
-	        // Format Trailer Video Url
-	        self.set( { trailerList: trailerList } );
+	       self.set({
+		       isExclusive: isAnyTrailerExclusive,
+		       trailerList: trailerList
+	       });
         }
     });
 
