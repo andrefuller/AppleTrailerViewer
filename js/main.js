@@ -24,7 +24,7 @@ requirejs.config({
         backboneRelational      : "libs/backbone/plugins/backbone-relational",
         backbonePaginator       : "libs/backbone/plugins/backbone-paginator-min",
 
-        bootstrap               : "libs/bootstrap/bootstrap-min",
+        bootstrap               : "libs/bootstrap/bootstrap.min",
 
         app                     : "app",
         router                  : "router",
