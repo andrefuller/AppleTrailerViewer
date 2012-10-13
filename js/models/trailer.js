@@ -71,8 +71,9 @@ define([
 	        trailerDescList = self.get('trailers');
 
 	        // Sometimes the trailer list is just a single object... so make it into an array
-	        if( _.isArray( trailerDescList ) === false )
+	        if( _.isArray( trailerDescList ) === false ){
 		        trailerDescList = [ trailerDescList ];
+            }
 
 	        for( i=0; i < trailerDescList.length; i++ ){
 		        trailerDesc = trailerDescList[ i ];
@@ -83,8 +84,9 @@ define([
 		        previewName += '/' + previewNameSplit[ previewNameSplit.length - 2 ];
 
                 // Detect whether the trailer is exclusive
-		        if( !isAnyTrailerExclusive && trailerDesc.exclusive === "true" )
+		        if( !isAnyTrailerExclusive && trailerDesc.exclusive === "true" ){
 			        isAnyTrailerExclusive = true;
+                }
 
 		        switch( trailerDesc.type ){
 			        case( "Featurette" ):
