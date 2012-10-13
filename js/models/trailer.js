@@ -41,10 +41,11 @@ define([
 	        posterUrl  = splitUrlArr[0];
 	        posterExtension  = splitUrlArr[1];
 
-            self.set( { posterLarge: posterUrl + posterAttribute + '-large' + posterExtension } );
-            self.set( { posterXLarge: posterUrl + posterAttribute + '-xlarge' + posterExtension } );
-
-	        self.set( { backgroundImg: trailerSitePrefix + trailerLocation + 'images/background.jpg' } );
+            self.set({
+                posterLarge: posterUrl + posterAttribute + '-large' + posterExtension,
+                posterXLarge: posterUrl + posterAttribute + '-xlarge' + posterExtension,
+                backgroundImg: trailerSitePrefix + trailerLocation + 'images/background.jpg'
+            });
 
             // Parse release date
 	        rDate  = self.get( 'releasedate' );
@@ -81,6 +82,7 @@ define([
 		        previewName += '/' + previewNameSplit[ previewNameSplit.length - 2 ];
 		        previewName += '/' + previewNameSplit[ previewNameSplit.length - 2 ];
 
+                // Detect whether the trailer is exclusive
 		        if( !isAnyTrailerExclusive && trailerDesc.exclusive === "true" )
 			        isAnyTrailerExclusive = true;
 
@@ -100,6 +102,7 @@ define([
 				        break;
 		        }
 
+                // Format Trailer Video Url
 		        trailerList.push({
 			        videoType: trailerDesc.type,
 			        videoSmall: trailerSitePrefix + previewName + trailerTypePrefix + '480p.mov',
@@ -108,11 +111,11 @@ define([
 		        });
 	        }
 
-	        // Detect whether the trailer is exclusive
-	       self.set( { isExclusive: isAnyTrailerExclusive } );
 
-	        // Format Trailer Video Url
-	        self.set( { trailerList: trailerList } );
+	       self.set({
+               isExclusive: isAnyTrailerExclusive,
+               trailerList: trailerList
+           });
         }
     });
 
