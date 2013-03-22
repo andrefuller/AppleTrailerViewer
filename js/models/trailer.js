@@ -42,10 +42,10 @@ define([
 	        posterExtension  = splitUrlArr[1];
 
             self.set({
-	            posterLarge: posterUrl + posterAttribute + '-large' + posterExtension,
-	            posterXLarge: posterUrl + posterAttribute + '-xlarge' + posterExtension,
-	            backgroundImg: trailerSitePrefix + trailerLocation + 'images/background.jpg'
-	        });
+                posterLarge: posterUrl + posterAttribute + '-large' + posterExtension,
+                posterXLarge: posterUrl + posterAttribute + '-xlarge' + posterExtension,
+                backgroundImg: trailerSitePrefix + trailerLocation + 'images/background.jpg'
+            });
 
             // Parse release date
 	        rDate  = self.get( 'releasedate' );
