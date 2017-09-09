@@ -1,0 +1,37 @@
+<div class="aboutView">
+  <section class="jumbotron text-center">
+    <div class="container">
+      <h1 class="jumbotron-heading">About</h1>
+      <p class="lead text-muted"><%- description %></p>
+      <a href="<%- homepage %>" class="btn btn-primary btn-lg" href="#" role="button">View on GitHub »</a>
+      <p class="small text-muted">Version: <%- version %></p>
+    </div>
+    <hr class="my-4">
+    <small class="text-muted">The original version of this app was created in 2010 in a day using <a href="http://www.adobe.com/products/flex.html" target="_blank">Adobe Flex</a> 4.1 as a request for a code sample for a UI Developer position, which, I think, sealed the deal (well, that, and my perspicacity and gregarious personality). However, now that "Flash <a href="http://www.apple.com/hotnews/thoughts-on-flash/" target="_blank">isn't</a> <a href="http://www.useit.com/alertbox/20001029.html" target="_blank">cool</a> <a href="http://www.zdnet.com/blog/networking/flash-is-dead-long-live-html5/1633" target="_blank">anymore</a>" (except, maybe, in <a href="http://www.digiday.com/brands/why-ikea-bets-on-flash-not-html5/" target="_blank">sweden</a>), I've <em>begrudgingly</em> started playing with HTML5/JS so that I can be cool again, which is the most important thing to me <strong><u>IN THE WORLD</u></strong>.
+    </small>
+  </section>
+
+  <h2 class="text-center">Project Dependencies</h2>
+  <p class="small text-muted text-center">(and why I chose them)</p>
+
+  <div class="details">
+    <div class="container">
+      <hr class="my-4">
+      <div class="row">
+        <% _.each( dependencies, function(dependency, index, list) { %>
+        <div class="card">
+          <div class="card-header">
+            <a class="h3 mr-auto" href="https://www.npmjs.com/package/<%- dependency.title %>"><%- dependency.title %></a>
+            <span class="small text-muted float-right"><%- dependency.version %></span>
+          </div>
+          <div class="card-body">
+
+            <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+          </div>
+        </div>
+        <% }); %>
+      </div>
+    </div>
+  </div>
+
+</div>

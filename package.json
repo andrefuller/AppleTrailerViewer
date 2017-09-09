@@ -1,0 +1,89 @@
+{
+  "name": "appletrailerviewer",
+  "version": "1.1.0-alpha",
+  "description": "Apple Trailer Viewer is a HTML5/JS sample application that I built to teach myself how to use the latest and greatest tools for modern web application development.",
+  "main": "js/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --env production",
+    "start": "nodemon --exec \"webpack-dev-server --env development\"",
+    "stats": "webpack --env production --profile --json > stats.json"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      ".git",
+      "node_modules/**/node_modules"
+    ],
+    "verbose": true,
+    "watch": [
+      "webpack.*.js"
+    ],
+    "ext": "js json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrefuller/AppleTrailerViewer.git"
+  },
+  "keywords": [
+    "app",
+    "demo",
+    "javascript",
+    "ui"
+  ],
+  "author": "Andre Fuller",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andrefuller/AppleTrailerViewer/issues"
+  },
+  "homepage": "https://github.com/andrefuller/AppleTrailerViewer#readme",
+  "dependencies": {
+    "backbone": "^1.3.3",
+    "backbone.marionette": "^3.4.2",
+    "backbone.paginator": "^2.0.6",
+    "bootstrap": "^4.0.0-beta",
+    "bootstrap-sass": "^3.3.7",
+    "font-awesome": "^4.7.0",
+    "google-fonts-webpack-plugin": "^0.4.2",
+    "jquery": "^3.2.1",
+    "moment": "^2.18.1",
+    "popper.js": "^1.12.3",
+    "tether": "^1.4.0",
+    "typeahead.js": "^0.11.1",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "autoprefixer": "^7.1.2",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^7.2.3",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "bootstrap-loader": "^2.2.0",
+    "clean-webpack-plugin": "^0.1.16",
+    "css-loader": "^0.28.7",
+    "eslint": "^4.5.0",
+    "eslint-loader": "^1.9.0",
+    "eslint-plugin-react": "^7.3.0",
+    "exports-loader": "^0.6.4",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "file-loader": "^0.11.2",
+    "font-awesome-loader": "^1.0.2",
+    "handlebars": "^4.0.10",
+    "handlebars-loader": "^1.5.0",
+    "html-webpack-plugin": "^2.30.1",
+    "html-webpack-template": "^5.6.0",
+    "imports-loader": "^0.7.1",
+    "node-sass": "^4.5.3",
+    "nodemon": "^1.12.1",
+    "postcss-loader": "^2.0.6",
+    "purify-css": "^1.2.5",
+    "purifycss-webpack": "^0.7.0",
+    "resolve-url-loader": "^2.1.0",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.18.2",
+    "url-loader": "^0.5.9",
+    "webpack": "^3.5.5",
+    "webpack-bundle-analyzer": "^2.9.0",
+    "webpack-dev-server": "^2.7.1",
+    "webpack-merge": "^4.1.0"
+  }
+}

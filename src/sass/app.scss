@@ -1,0 +1,273 @@
+$fa-font-path: "~font-awesome/fonts";
+@import "~font-awesome/scss/font-awesome.scss";
+
+$suggestion-hover-color: #fafafa;
+$suggestion-highlight-color: #FFC;
+
+html {
+  position: relative;
+  min-height: 100%;
+  overflow-y: scroll;
+  *overflow-x: hidden;
+}
+
+body {
+  font-family: "Roboto Condensed";
+  background-color: #f5f8fa;
+  margin-bottom: 100px;
+}
+
+.navbar {
+  background-color: $white;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+
+  .navbar-brand {
+    font-weight: bold;
+  }
+
+  // Extending existing bootstrap functionality
+  .twitter-typeahead,
+  .typeahead,
+  .tt-menu {
+    @extend .w-100;
+  }
+
+  .twitter-typeahead {
+    .tt-menu {
+      margin: 2px 0;
+      background-color: $white;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      box-shadow: 0 5px 10px rgba(0,0,0,.2);
+
+      .tt-dropdown-menu {
+        max-height: 150px;
+        overflow-y: auto;
+      }
+
+      .tt-suggestion {
+        @extend .d-flex;
+
+        padding: 3px 20px;
+        font-size: 18px;
+        line-height: 24px;
+        height: 85px;
+        border-bottom: 1px solid $gray-300;
+
+        &.tt-cursor {
+          color: $white;
+          background-color: $suggestion-hover-color;
+        }
+
+        .img-thumbnail {
+          float: left;
+          width: 50px;
+          height: 70px;
+          display: inline-block;
+        }
+
+        .info {
+          @extend .d-flex;
+          width: 90%;
+
+          padding-left: 10px;
+          flex-direction: column;
+        }
+
+        .tt-highlight {
+          background-color: $suggestion-highlight-color;
+        }
+      }
+
+      .tt-suggestion,
+      a {
+        align-items: center;
+      }
+
+      .tt-suggestion:hover {
+        cursor: pointer;
+        background-color: $suggestion-hover-color;
+      }
+    }
+  }
+}
+
+#app-container {
+  margin-top: 3.5rem;
+
+  ul.nav {
+    font-size: 12px;
+    font-weight: bold;
+
+    .nav-link {
+      padding: 5px 10px;
+
+      &.active {
+        background-color: $gray-600;
+        color: $white !important;
+      }
+    }
+  }
+
+  .trailerListView {
+    .transition {
+      transition: all 0.5s ease;
+      -webkit-transition: all 0.5s ease;
+      -moz-transition: all 0.5s ease;
+      -o-transition: all 0.5s ease;
+      -ms-transition: all 0.5s ease;
+    }
+
+    .trailerCard {
+      position: relative;
+      overflow: hidden;
+      transform: scale(1);
+
+      .badge {
+        position: absolute;
+        right: 0.5rem;
+        top: 0.5rem;
+      }
+
+      .img-thumbnail {
+        min-width: 198px;
+        min-height: 290px;
+      }
+    }
+
+    .trailerCard:hover {
+      transform: scale(1.1);
+    }
+
+    .paginationContainer .pagination {
+      display: inline-flex;
+    }
+  }
+
+  .trailerView {
+    .movie-rating {
+      display: inline-block;
+      vertical-align: middle;
+      width: 60px;
+      height: 21px;
+      background: url("./src/assets/images/movie_ratings.svg") no-repeat 0 0;
+      background-size: 204px 600px;
+      text-indent: 100%;
+      direction: ltr;
+      overflow: hidden;
+      opacity: 0.8;
+      margin-top: 9px;
+    }
+
+    .rating-nc17 {
+      background-position: -90px -120px;
+      height: 21px;
+    }
+
+    .rating-pg13 {
+      background-position: -90px -30px;
+      height: 21px;
+    }
+
+    .rating-pg {
+      background-position: -90px -60px;
+      height: 21px;
+    }
+
+    .rating-r {
+      background-position: -90px -90px;
+      height: 21px;
+    }
+
+    .rating-notrated,
+    .rating-notyetrated,
+    .rating-not-yet-rated,
+    .rating-nr {
+      background-position: -90px 0;
+      height: 21px;
+    }
+
+    .rating-g {
+      background-position: -90px -150px;
+      height: 21px;
+    }
+
+    .sidebar {
+      border-left: 1px solid $gray-300;
+      background-color: $white;
+
+      .list-group-item:last-child {
+        margin-bottom: 3rem;
+      }
+    }
+  }
+
+  .details {
+    padding-bottom: 15rem;
+  }
+
+  #videoModal {
+    .modal-content {
+      background-color: $black;
+    }
+
+    video {
+      position: relative;
+      display: block;
+    }
+  }
+
+  .aboutView {
+    .jumbotron .container {
+      max-width: 50rem;
+    }
+
+    .details {
+      min-height: 50rem;
+      padding-bottom: 3rem;
+
+      .card {
+        box-shadow: 0 0 5px rgba(0,0,0,.2);
+        margin: 9px;
+        border: 0;
+
+        .card-header {
+          @extend .d-flex;
+          align-items: center;
+          padding-bottom: 5px !important;
+        }
+      }
+    }
+  }
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  background-color: $gray-900;
+
+  .footer-container {
+    align-items: center;
+  }
+}
+
+@include media-breakpoint-down(xs) {
+  .trailerListView.container-fluid > .d-flex {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #app-container ul.nav {
+    width: fit-content !important;
+  }
+
+  li.page-item.active {
+    position: inherit;
+  }
+
+  footer p {
+    font-size: 80%;
+    font-weight: normal;
+  }
+}

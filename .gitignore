@@ -3,3 +3,6 @@
 .project
 fonts.css
 .idea
+node_modules
+dist
+package-lock.json
