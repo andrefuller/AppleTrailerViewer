@@ -8,12 +8,8 @@ import Moment from 'moment';
 // TODO: Manage locale in a global cofig
 const LOCALE = 'en';
 
-const RATING_MAP = {
-  'not-yet-rated': "NR"
-};
-
 export default Backbone.Model.extend({
-  initialize: function(data) {
+  initialize: function (data) {
     let initData;
 
     if (data) {
@@ -35,8 +31,7 @@ export default Backbone.Model.extend({
       actors,
       writers,
       genres,
-      trailers,
-      trailerList;
+      trailers;
 
     heroImages = data.heros;
 
@@ -78,10 +73,10 @@ export default Backbone.Model.extend({
     modelObj.trailerList = trailers.map(trailer => {
       let trailerSizes,
         mappedObj = {
-        videoTitle: trailer.title,
-        videoThumbnail: trailer.screen,
-        videoRuntime: trailer.runtime
-      };
+          videoTitle: trailer.title,
+          videoThumbnail: trailer.screen,
+          videoRuntime: trailer.runtime
+        };
 
       trailerSizes = trailer.versions.enus.sizes;
 
@@ -94,22 +89,16 @@ export default Backbone.Model.extend({
   },
 
   parseCollectionData(data) {
-    let i,
-      trailerLocation,
+    let trailerLocation,
       splitUrlArr,
       posterUrl,
       posterExtension,
       rDate,
-      genreList,
-      castList,
       trailerDescList,
-      trailerDesc,
       isAnyTrailerExclusive,
-      trailerTypePrefix,
       modelObj,
       posterAttribute = 'poster',
-      trailerSitePrefix = "http://trailers.apple.com",
-      trailerMoviePrefix = "http://movietrailers.apple.com/movies",
+      trailerSitePrefix = 'http://trailers.apple.com',
       trailerList = [];
 
     trailerLocation = data.location;

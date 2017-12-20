@@ -1,5 +1,6 @@
 'use strict';
 // Libs
+import $ from 'jquery';
 import Backbone from 'backbone';
 import underscore from 'underscore';
 
@@ -17,11 +18,11 @@ import Trailer from './models/trailer';
 
 export default Backbone.Router.extend({
   routes: {
-    ''                          : "viewTrailerList",
-    'section/:filter'           : "viewTrailerList",
-    'trailers*location'         : "viewTrailerInfo",
-    'about'                     : "viewAbout",
-    '*actions'                  : "defaultAction"
+    '': 'viewTrailerList',
+    'section/:filter': 'viewTrailerList',
+    'trailers*location': 'viewTrailerInfo',
+    'about': 'viewAbout',
+    '*actions': 'defaultAction'
   },
 
   initialize() {
@@ -58,7 +59,7 @@ export default Backbone.Router.extend({
   },
 
   getTrailerInfoByLocation(location) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       // Use the trailer info to look up the FilmID which is only available via
       // a variable on the trailer site (I assume it's injected into the page
       // using some sort of server side rendering)
@@ -71,7 +72,7 @@ export default Backbone.Router.extend({
         .then(filmID => {
           fetch(`/feeds/data/${filmID}.json`)
             .then(response => response.text())
-            .then(data =>{
+            .then(data => {
               let trailerJSON = JSON.parse(data);
 
               trailerJSON.isFeedData = true;
@@ -85,7 +86,7 @@ export default Backbone.Router.extend({
   },
 
   searchTrailers(searchTerm) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       fetch(`/trailers/home/scripts/quickfind.php?q=${searchTerm}`)
         .then(response => response.json())
         .then(json => {
@@ -102,7 +103,7 @@ export default Backbone.Router.extend({
   },
 
   getApplicationInfo() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       fetch('./package.json')
         .then(response => response.json())
         .then(json => {
@@ -115,7 +116,7 @@ export default Backbone.Router.extend({
   onSearchInputChange(searchTerm) {
     let router = this;
 
-    if(searchTerm && searchTerm.length > 1) {
+    if (searchTerm && searchTerm.length > 1) {
       this.searchTrailers(searchTerm)
         .then(resultModels => {
           router.collection.reset(resultModels);
@@ -125,7 +126,7 @@ export default Backbone.Router.extend({
     }
   },
 
-  onGetDataError(data, response) {
+  onGetDataError(data) {
     this.collection.isFetchPending = false;
     console.error(data);
   },
@@ -142,7 +143,7 @@ export default Backbone.Router.extend({
   },
 
   viewTrailerList(filter) {
-    let defaultFilter =  `just_added`;
+    let defaultFilter = 'just_added';
 
     if (!this.trailerListView) {
       this.trailerListView = new TrailerListView({
@@ -155,7 +156,7 @@ export default Backbone.Router.extend({
     }
 
     this.getTrailers(filter || defaultFilter)
-      .then(data => this.renderView(this.trailerListView, this.collection))
+      .then(() => this.renderView(this.trailerListView, this.collection))
       .catch((data, response) => this.onGetDataError(data, response));
   },
 

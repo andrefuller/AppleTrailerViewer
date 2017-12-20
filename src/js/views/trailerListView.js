@@ -2,7 +2,6 @@
 // Libs
 import $ from 'jquery';
 import _ from 'underscore';
-import Backbone from 'backbone';
 import Marionette from 'backbone.marionette'
 
 import template from '../templates/trailerListView.hbs';
@@ -12,11 +11,11 @@ export default Marionette.View.extend({
   template: _.template(template()),
 
   events: {
-    "click .pagination .page-link": "getPage"
+    'click .pagination .page-link': 'getPage'
   },
 
 
-  navList:[
+  navList: [
     {
       label: 'Just Added',
       filter: 'just_added'
@@ -43,7 +42,7 @@ export default Marionette.View.extend({
     currentCollection = this.collection = this.collection || coll;
 
     activeNavList = [...this.navList].map(elem => {
-      if(elem.filter === currentCollection.currentFilter)
+      if (elem.filter === currentCollection.currentFilter)
         elem.active = 'active';
       else
         elem.active = ''
@@ -51,7 +50,7 @@ export default Marionette.View.extend({
       return elem;
     });
 
-    pageList = Array.from(new Array(currentCollection.state.totalPages), (x,i) => {
+    pageList = Array.from(new Array(currentCollection.state.totalPages), (x, i) => {
       let mappedIndex = i + 1;
 
       return {

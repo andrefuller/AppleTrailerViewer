@@ -12,7 +12,7 @@ export default Marionette.View.extend({
   template: _.template(template()),
 
   events: {
-    "click .video-link": "showModal"
+    'click .video-link': 'showModal'
   },
 
   render(model) {
