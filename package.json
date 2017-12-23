@@ -31,7 +31,7 @@
     "ui"
   ],
   "author": "Andre Fuller",
-  "license": "ISC",
+  "license": "BSD-3-Clause",
   "bugs": {
     "url": "https://github.com/andrefuller/AppleTrailerViewer/issues"
   },
