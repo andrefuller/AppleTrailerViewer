@@ -14,7 +14,6 @@ export default Marionette.View.extend({
     'click .pagination .page-link': 'getPage'
   },
 
-
   navList: [
     {
       label: 'Just Added',

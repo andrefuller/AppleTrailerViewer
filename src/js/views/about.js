@@ -11,9 +11,7 @@ export default Marionette.View.extend({
   template: _.template(template()),
 
   render(data) {
-    let dependencies = data.dependencies;
-
-    dependencies = Object.keys(dependencies).map( key => {
+    let dependencies = Object.keys(data.dependencies).map(key => {
       return {
         title: key,
         version: dependencies[key].replace(/\^/, 'v')
