@@ -19,6 +19,11 @@ export default Marionette.View.extend({
     'click .navbar-nav li a': 'onNavMenuClick',
   },
 
+  // render(data) {
+  //   $(this.el).html(this.template(data));
+  //   return this;
+  // },
+
   onDomRefresh: function () {
     let engine = new Bloodhound({
       datumTokenizer: Bloodhound.tokenizers.obj.whitespace('title'),
@@ -55,6 +60,8 @@ export default Marionette.View.extend({
           suggestion: _.template(searchSuggestionTemplate())
         }
       });
+
+    console.log('onDomRefresh')
   },
 
   onNavMenuClick(event) {

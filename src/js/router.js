@@ -2,11 +2,11 @@
 // Libs
 import $ from 'jquery';
 import Backbone from 'backbone';
-import underscore from 'underscore';
 
 // Views
 import NavBar from './views/navbar';
 import AboutView from './views/about';
+import Footer from './views/footer';
 import TrailerListView from './views/trailerListView';
 import TrailerView from './views/trailerView';
 
@@ -29,17 +29,21 @@ export default Backbone.Router.extend({
     this.collection = new TrailerCollection();
     this.collection.isFetchPending = false;
 
+    // Nav Bar
     this.navBar = new NavBar({
       el: '#navbar',
-      model: new Backbone.Model({
-        appName: 'AppleTrailerViewer'
-      }),
       collection: this.collection
     });
 
-    this.navBar.$el.hide();
-    this.navBar.render();
-    this.navBar.$el.fadeIn('slow');
+    // Footer
+    this.footer = new Footer({
+      el: '#footer'
+    });
+
+    this.appInfo = this.getApplicationInfo().then(appInfo => {
+      this.renderView(this.navBar, appInfo, 'navBar')
+      this.renderView(this.footer, appInfo, 'footer')
+    }).catch((data, response) => this.onGetDataError(data, response));
   },
 
   getTrailers(filter) {
@@ -131,15 +135,15 @@ export default Backbone.Router.extend({
     console.error(data);
   },
 
-  renderView(view, data) {
-    let $appContainer = $('#app-container');
-    this.collection.isFetchPending = false;
+  renderView(view, data, target) {
+    let $targetContainer = $(target || '#app-container');
+    if ($targetContainer) {
+      this.collection.isFetchPending = false;
 
-    $appContainer.empty();
-
-    view.render(data);
-
-    $appContainer.hide().fadeIn('slow');
+      $targetContainer.empty();
+      view.render(data);
+      $targetContainer.hide().fadeIn('slow');
+    }
   },
 
   viewTrailerList(filter) {

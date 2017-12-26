@@ -1,13 +1,17 @@
 <nav class="navbar fixed-top navbar-expand-sm navbar-light">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+    aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <a class="navbar-brand" href="#"><%- appName %></a>
+  <a class="navbar-brand" href="#">
+    <%- name %>
+  </a>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <form class="mx-auto w-50">
       <div class="input-group">
         <i class="input-group-addon fa fa-search" id="basic-addon1" aria-hidden="true"></i>
-        <input type="text" class="form-control typeahead" placeholder="Search by Title, Director or Actor" aria-label="Search by Title, Director or Actor" aria-describedby="basic-addon1">
+        <input type="text" class="form-control typeahead" placeholder="Search by Title, Director or Actor" aria-label="Search by Title, Director or Actor"
+          aria-describedby="basic-addon1">
       </div>
     </form>
     <ul class="navbar-nav">

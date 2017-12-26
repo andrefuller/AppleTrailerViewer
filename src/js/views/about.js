@@ -1,7 +1,7 @@
 'use strict';
 // Libs
+import $ from 'jquery';
 import _ from 'underscore';
-import Backbone from 'backbone';
 import Marionette from 'backbone.marionette'
 
 import template from '../templates/about.hbs';
@@ -14,7 +14,7 @@ export default Marionette.View.extend({
     let dependencies = Object.keys(data.dependencies).map(key => {
       return {
         title: key,
-        version: dependencies[key].replace(/\^/, 'v')
+        version: data.dependencies[key].replace(/\^/, 'v')
       }
     });
 
