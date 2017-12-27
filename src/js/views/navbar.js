@@ -2,11 +2,13 @@
 // Libs
 import _ from 'underscore';
 import $ from 'jquery';
-import Backbone from 'backbone';
 import Marionette from 'backbone.marionette'
 import template from '../templates/navbar.hbs';
 import searchSuggestionTemplate from '../templates/searchSuggestion.hbs';
+
+// eslint-disable-next-line
 import { typeahead } from 'typeahead.js';
+import Bloodhound from 'typeahead.js/dist/bloodhound';
 
 // Model
 import Trailer from '../models/trailer';
@@ -19,12 +21,9 @@ export default Marionette.View.extend({
     'click .navbar-nav li a': 'onNavMenuClick',
   },
 
-  // render(data) {
-  //   $(this.el).html(this.template(data));
-  //   return this;
-  // },
+  render(data) {
+    $(this.el).html(this.template(data));
 
-  onDomRefresh: function () {
     let engine = new Bloodhound({
       datumTokenizer: Bloodhound.tokenizers.obj.whitespace('title'),
       queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -40,11 +39,12 @@ export default Marionette.View.extend({
       }
     });
 
-    $('.typeahead').typeahead({
-      hint: true,
-      highlight: true,
-      minLength: 1
-    },
+    $('.typeahead').typeahead(
+      {
+        hint: true,
+        highlight: true,
+        minLength: 1
+      },
       {
         source: engine,
         async: true,
@@ -59,9 +59,10 @@ export default Marionette.View.extend({
           ].join('\n'),
           suggestion: _.template(searchSuggestionTemplate())
         }
-      });
+      }
+    );
 
-    console.log('onDomRefresh')
+    return this;
   },
 
   onNavMenuClick(event) {

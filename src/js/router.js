@@ -29,20 +29,19 @@ export default Backbone.Router.extend({
     this.collection = new TrailerCollection();
     this.collection.isFetchPending = false;
 
-    // Nav Bar
-    this.navBar = new NavBar({
-      el: '#navbar',
-      collection: this.collection
-    });
-
-    // Footer
-    this.footer = new Footer({
-      el: '#footer'
-    });
-
     this.appInfo = this.getApplicationInfo().then(appInfo => {
-      this.renderView(this.navBar, appInfo, 'navBar')
-      this.renderView(this.footer, appInfo, 'footer')
+      // Nav Bar
+      this.navBar = new NavBar({
+        el: '#navbar',
+        collection: this.collection
+      });
+      this.renderView(this.navBar, appInfo, 'navBar');
+
+      // Footer
+      this.footer = new Footer({
+        el: '#footer'
+      });
+      this.renderView(this.footer, appInfo, 'footer');
     }).catch((data, response) => this.onGetDataError(data, response));
   },
 
@@ -130,9 +129,8 @@ export default Backbone.Router.extend({
     }
   },
 
-  onGetDataError(data) {
+  onGetDataError() {
     this.collection.isFetchPending = false;
-    console.error(data);
   },
 
   renderView(view, data, target) {
@@ -188,7 +186,6 @@ export default Backbone.Router.extend({
       .catch((data, response) => this.onGetDataError(data, response));
   },
 
-  defaultAction(actions) {
-    console.log(actions);
+  defaultAction() {
   }
 });
