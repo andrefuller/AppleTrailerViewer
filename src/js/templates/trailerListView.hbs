@@ -1,61 +1,99 @@
 <div class="trailerListView container-fluid pt-3">
   <div class="d-flex">
     <!-- Section Filter -->
-    <ul class="nav nav-pills mb-3 w-100">
+    <ul class="nav nav-pills my-3 w-100">
       <% _.each( navItems, function(navItem, index, list) { %>
-      <li class="nav-item">
-        <a class="nav-link text-dark <%- navItem.active %>" href="#/section/<%- navItem.filter %>"><%- navItem.label %></a>
-      </li>
-      <% }); %>
+        <li class="nav-item">
+          <a class="nav-link text-dark <%- navItem.active %>" href="#/section/<%- navItem.filter %>">
+            <%- navItem.label %>
+          </a>
+        </li>
+        <% }); %>
     </ul>
 
     <!-- Pagination -->
-    <nav class="paginationContainer" aria-label="Pages">
-      <ul class="pagination pagination-sm">
-        <li class="page-item <% if( !paging.hasPreviousPage ) { %>disabled<% } %>">
-          <a class="page-link" href="#" data-page-index="<%- paging.previousPageIndex %>">Previous</a>
-        </li>
-        <% _.each( paging.list, function(page, index, list) { %>
-        <li class="page-item <%- page.active %>">
-          <a class="page-link" href="#" data-page-index="<%- page.index %>"><%- page.label %></a>
-        </li>
-        <% }); %>
-        <li class="page-item <% if( !paging.hasNextPage ) { %>disabled<% } %>">
-          <a class="page-link" href="#" data-page-index="<%- paging.nextPageIndex %>">Next</a>
-        </li>
-      </ul>
-    </nav>
+    <% if( paging ) { %>
+      <nav class="paginationContainer mt-3" aria-label="Pages">
+        <ul class="pagination pagination-sm">
+          <li class="page-item <% if( !paging.hasPreviousPage ) { %>disabled<% } %>">
+            <a class="page-link" href="#" data-page-index="<%- paging.previousPageIndex %>">Previous</a>
+          </li>
+          <% _.each( paging.list, function(page, index, list) { %>
+            <li class="page-item <%- page.active %>">
+              <a class="page-link" href="#" data-page-index="<%- page.index %>">
+                <%- page.label %>
+              </a>
+            </li>
+            <% }); %>
+              <li class="page-item <% if( !paging.hasNextPage ) { %>disabled<% } %>">
+                <a class="page-link" href="#" data-page-index="<%- paging.nextPageIndex %>">Next</a>
+              </li>
+        </ul>
+      </nav>
+      <% } %>
   </div>
 
-  <!-- Grid -->
+  <!-- Thumbnail Grid -->
+  <% if( !groups ) { %>
   <div class="row">
     <% _.each( trailers, function(trailer, index, list) { %>
       <div class="col-lg-2 col-md-4 col-xs-5 trailerCard transition">
         <a class="d-block mb-4 h-100" href="#<%- trailer.location %>" title="<%- trailer.title %>">
           <% if( trailer.isExclusive ) { %>
-          <span class="badge badge-warning">Exclusive</span>
-          <% } %>
-          <img class="img-thumbnail" src="<%- trailer.posterLarge %>" alt="<%- trailer.title %>">
-          <span class="d-inline-block text-muted text-truncate mw-100"><%- trailer.title %></span>
+            <span class="badge badge-warning">Exclusive</span>
+            <% } %>
+              <img class="img-thumbnail" src="<%- trailer.posterLarge %>" alt="<%- trailer.title %>">
+              <span class="d-inline-block text-muted text-truncate mw-100">
+                <%- trailer.title %>
+              </span>
         </a>
       </div>
-    <% }); %>
+      <% }); %>
   </div>
+  <% } %>
+
+  <!-- Grouped Data Grid -->
+  <% if( groups ) { %>
+  <div>
+    <!--div class="col-lg-2 col-md-4 col-xs-5"-->
+      <% _.each( groups, function(trailers, groupName) { %>
+        <div class="mb-4 pb-4">
+          <span class="d-block h2">
+            <%- groupName %>
+          </span>
+          <div class="d-block list-col">
+            <% _.each( trailers, function(trailer, index) { %>
+              <a class="d-block h-100" href="#<%- trailer.location %>" title="<%- trailer.title %>">
+                <span class="d-inline-block text-muted text-truncate mw-100 transition">
+                  <%- trailer.title %>
+                </span>
+              </a>
+            <% }); %>
+          </div>
+        </div>
+      <% }); %>
+    <!--/div-->
+  </div>
+  <% } %>
 
   <!-- Pagination -->
-  <nav class="paginationContainer text-right" aria-label="Pages">
-    <ul class="pagination pagination-sm">
-      <li class="page-item <% if( !paging.hasPreviousPage ) { %>disabled<% } %>">
-        <a class="page-link" href="#" data-page-index="<%- paging.previousPageIndex %>">Previous</a>
-      </li>
-      <% _.each( paging.list, function(page, index, list) { %>
-      <li class="page-item <%- page.active %>">
-        <a class="page-link" href="#" data-page-index="<%- page.index %>"><%- page.label %></a>
-      </li>
-      <% }); %>
-      <li class="page-item <% if( !paging.hasNextPage ) { %>disabled<% } %>">
-        <a class="page-link" href="#" data-page-index="<%- paging.nextPageIndex %>">Next</a>
-      </li>
-    </ul>
-  </nav>
+  <% if( paging ) { %>
+    <nav class="paginationContainer text-right" aria-label="Pages">
+      <ul class="pagination pagination-sm">
+        <li class="page-item <% if( !paging.hasPreviousPage ) { %>disabled<% } %>">
+          <a class="page-link" href="#" data-page-index="<%- paging.previousPageIndex %>">Previous</a>
+        </li>
+        <% _.each( paging.list, function(page, index, list) { %>
+          <li class="page-item <%- page.active %>">
+            <a class="page-link" href="#" data-page-index="<%- page.index %>">
+              <%- page.label %>
+            </a>
+          </li>
+          <% }); %>
+            <li class="page-item <% if( !paging.hasNextPage ) { %>disabled<% } %>">
+              <a class="page-link" href="#" data-page-index="<%- paging.nextPageIndex %>">Next</a>
+            </li>
+      </ul>
+    </nav>
+    <% } %>
 </div>

@@ -1,6 +1,8 @@
 'use strict';
 // Libs
 import Backbone from 'backbone';
+
+// eslint-disable-next-line
 import BackbonePaginator from 'backbone.paginator'
 
 // Models
@@ -8,17 +10,17 @@ import TrailerModel from '../models/trailer';
 
 export default Backbone.PageableCollection.extend({
   model: TrailerModel,
-  mode: "client",
+  mode: 'infinite',
 
-  urlPrefix: `home/feeds`,
+  urlPrefix: 'home/feeds',
 
-  currentFilter: `just_added`,
+  currentFilter: 'just_added',
 
   state: {
     pageSize: 40
   },
 
-  url(options) {
+  url() {
     let output = `${this.urlPrefix}/${this.currentFilter}.json`;
     return output;
   },

@@ -1,6 +1,5 @@
 'use strict';
 // Libs
-import $ from 'jquery';
 import _ from 'underscore';
 import Backbone from 'backbone';
 import Moment from 'moment';
@@ -95,11 +94,9 @@ export default Backbone.Model.extend({
       posterExtension,
       rDate,
       trailerDescList,
-      isAnyTrailerExclusive,
       modelObj,
       posterAttribute = 'poster',
-      trailerSitePrefix = 'http://trailers.apple.com',
-      trailerList = [];
+      trailerSitePrefix = 'http://trailers.apple.com';
 
     trailerLocation = data.location;
 
@@ -129,15 +126,8 @@ export default Backbone.Model.extend({
     // Format cast list
     modelObj.castListTxt = this.formatListForDisplay(data.actors);
 
-    trailerDescList = data.trailers;
-
-    // Sometimes the trailer list is just a single object... so make it into an array
-    if (_.isArray(trailerDescList) === false) {
-      trailerDescList = [trailerDescList];
-    }
-
-    modelObj.isExclusive = isAnyTrailerExclusive;
-    modelObj.trailerList = trailerList;
+    modelObj.isExclusive = _.reduce(trailerDescList, item => item && item.exclusive, false);
+    modelObj.trailerList = Array.from(data.trailers);
 
     return modelObj;
   }

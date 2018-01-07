@@ -36,7 +36,9 @@ export default Marionette.View.extend({
   render(coll) {
     let activeNavList,
       currentCollection,
-      pageList;
+      trailers,
+      groups,
+      pageData;
 
     currentCollection = this.collection = this.collection || coll;
 
@@ -49,27 +51,45 @@ export default Marionette.View.extend({
       return elem;
     });
 
-    pageList = Array.from(new Array(currentCollection.state.totalPages), (x, i) => {
-      let mappedIndex = i + 1;
+    const buildPagingData = () => {
+      let pageInfo = {};
 
-      return {
-        index: mappedIndex,
-        label: mappedIndex,
-        active: mappedIndex === currentCollection.state.currentPage ? 'active' : ''
-      }
-    });
+      pageInfo.list = Array.from(new Array(currentCollection.state.totalPages), (x, i) => {
+        let mappedIndex = i + 1;
+
+        return {
+          index: mappedIndex,
+          label: mappedIndex,
+          active: mappedIndex === currentCollection.state.currentPage ? 'active' : ''
+        }
+      });
+
+      pageInfo.nextPageIndex = currentCollection.state.currentPage + 1;
+      pageInfo.previousPageIndex = currentCollection.state.currentPage - 1;
+      pageInfo.hasNextPage = currentCollection.hasNextPage();
+      pageInfo.hasPreviousPage = currentCollection.hasPreviousPage();
+
+      return pageInfo;
+    }
+
+    trailers = currentCollection.toJSON();
+    switch (currentCollection.currentFilter) {
+      case 'genres':
+        groups = _.groupBy(trailers, item => item.genre[0]);
+        break;
+      case 'studios':
+        groups = _.groupBy(trailers, item => item.studio);
+        break;
+      default:
+        pageData = buildPagingData();
+        break;
+    }
 
     $(this.el).html(this.template({
       navItems: activeNavList,
-      trailers: currentCollection.toJSON(),
-      paging: {
-        nextPageIndex: currentCollection.state.currentPage + 1,
-        previousPageIndex: currentCollection.state.currentPage - 1,
-        hasNextPage: currentCollection.hasNextPage(),
-        hasPreviousPage: currentCollection.hasPreviousPage(),
-        list: pageList
-      }
-
+      paging: pageData,
+      trailers,
+      groups
     }));
 
     return this;

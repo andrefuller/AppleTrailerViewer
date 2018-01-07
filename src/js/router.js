@@ -48,11 +48,21 @@ export default Backbone.Router.extend({
   getTrailers(filter) {
     return new Promise((resolve, reject) => {
       if (!this.collection.isFetchPending) {
+        let mode = filter === 'genres' || filter === 'studios' ? 'infinite' : 'client';
+
         this.collection.isFetchPending = true;
         this.collection.currentFilter = filter || this.collection.currentFilter;
 
+        this.collection.switchMode(mode);
+
         this.collection.fetch({
-          success: data => resolve(data),
+          success: data => {
+            if (mode === 'infinite') {
+              this.collection.setPageSize(this.collection.length);
+            }
+
+            resolve(data);
+          },
           error: (data, response) => reject(data, response)
         });
       } else {

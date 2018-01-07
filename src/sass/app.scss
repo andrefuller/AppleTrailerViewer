@@ -134,6 +134,19 @@ body {
       }
     }
 
+    .list-col {
+      column-count: 5;
+
+      a span {
+        transform: scale(1);
+      }
+
+      a span:hover {
+        text-decoration: underline;
+        transform: scale(1.1);
+      }
+    }
+
     .trailerCard:hover {
       transform: scale(1.1);
     }
