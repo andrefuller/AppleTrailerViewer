@@ -4,7 +4,7 @@ const glob = require('glob');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const GoogleFontsPlugin = require("google-fonts-webpack-plugin")
+const GoogleFontsPlugin = require('google-fonts-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 // Config

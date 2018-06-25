@@ -25,6 +25,14 @@ body {
     font-weight: bold;
   }
 
+  .input-group {
+    flex-wrap: nowrap;
+
+    .input-group-prepend {
+      margin-right: 0;
+    }
+  }
+
   // Extending existing bootstrap functionality
   .twitter-typeahead,
   .typeahead,
