@@ -1,54 +1,59 @@
-'use strict';
 // Libs
-import $ from 'jquery';
-import Backbone from 'backbone';
+import $ from "jquery";
+import Backbone from "backbone";
+import proxiedFetch from "proxied-fetch";
 
 // Views
-import NavBar from './views/navbar';
-import AboutView from './views/about';
-import Footer from './views/footer';
-import TrailerListView from './views/trailerListView';
-import TrailerView from './views/trailerView';
+import NavBar from "./views/navbar";
+import AboutView from "./views/about";
+import Footer from "./views/footer";
+import TrailerListView from "./views/trailerListView";
+import TrailerView from "./views/trailerView";
 
 // Collections
-import TrailerCollection from './collections/trailerCollection';
+import TrailerCollection from "./collections/trailerCollection";
 
 // Model
-import Trailer from './models/trailer';
+import Trailer from "./models/trailer";
+
+const myProxies = ["https://cors-anywhere.herokuapp.com/"];
 
 export default Backbone.Router.extend({
   routes: {
-    '': 'viewTrailerList',
-    'section/:filter': 'viewTrailerList',
-    'trailers*location': 'viewTrailerInfo',
-    'about': 'viewAbout',
-    '*actions': 'defaultAction'
+    "": "viewTrailerList",
+    "section/:filter": "viewTrailerList",
+    "trailers*location": "viewTrailerInfo",
+    about: "viewAbout",
+    "*actions": "defaultAction"
   },
 
   initialize() {
     this.collection = new TrailerCollection();
     this.collection.isFetchPending = false;
 
-    this.appInfo = this.getApplicationInfo().then(appInfo => {
-      // Nav Bar
-      this.navBar = new NavBar({
-        el: '#navbar',
-        collection: this.collection
-      });
-      this.renderView(this.navBar, appInfo, 'navBar');
+    this.appInfo = this.getApplicationInfo()
+      .then(appInfo => {
+        // Nav Bar
+        this.navBar = new NavBar({
+          el: "#navbar",
+          collection: this.collection
+        });
+        this.renderView(this.navBar, appInfo, "navBar");
 
-      // Footer
-      this.footer = new Footer({
-        el: '#footer'
-      });
-      this.renderView(this.footer, appInfo, 'footer');
-    }).catch((data, response) => this.onGetDataError(data, response));
+        // Footer
+        this.footer = new Footer({
+          el: "#footer"
+        });
+        this.renderView(this.footer, appInfo, "footer");
+      })
+      .catch((data, response) => this.onGetDataError(data, response));
   },
 
   getTrailers(filter) {
     return new Promise((resolve, reject) => {
       if (!this.collection.isFetchPending) {
-        let mode = filter === 'genres' || filter === 'studios' ? 'infinite' : 'client';
+        const mode =
+          filter === "genres" || filter === "studios" ? "infinite" : "client";
 
         this.collection.isFetchPending = true;
         this.collection.currentFilter = filter || this.collection.currentFilter;
@@ -57,7 +62,7 @@ export default Backbone.Router.extend({
 
         this.collection.fetch({
           success: data => {
-            if (mode === 'infinite') {
+            if (mode === "infinite") {
               this.collection.setPageSize(this.collection.length);
             }
 
@@ -72,21 +77,24 @@ export default Backbone.Router.extend({
   },
 
   getTrailerInfoByLocation(location) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       // Use the trailer info to look up the FilmID which is only available via
       // a variable on the trailer site (I assume it's injected into the page
       // using some sort of server side rendering)
-      fetch(`/trailers/${location}/`)
+      proxiedFetch(`http://trailers.apple.com/trailers${location}`, myProxies)
         .then(response => response.text())
         .then(text => {
-          let found = text.match(/var FilmId.*\'(\d+)*\'/);
+          const found = text.match(/var FilmId.*'(\d+)*'/);
           return found && found[1];
         })
         .then(filmID => {
-          fetch(`/feeds/data/${filmID}.json`)
+          proxiedFetch(
+            `http://trailers.apple.com/trailers/feeds/data/${filmID}.json`,
+            myProxies
+          )
             .then(response => response.text())
             .then(data => {
-              let trailerJSON = JSON.parse(data);
+              const trailerJSON = JSON.parse(data);
 
               trailerJSON.isFeedData = true;
 
@@ -99,8 +107,11 @@ export default Backbone.Router.extend({
   },
 
   searchTrailers(searchTerm) {
-    return new Promise((resolve) => {
-      fetch(`/trailers/home/scripts/quickfind.php?q=${searchTerm}`)
+    return new Promise(resolve => {
+      proxiedFetch(
+        `http://trailers.apple.com/trailers/home/scripts/quickfind.php?q=${searchTerm}`,
+        myProxies
+      )
         .then(response => response.json())
         .then(json => {
           let resultsArr = json.results || [];
@@ -116,8 +127,8 @@ export default Backbone.Router.extend({
   },
 
   getApplicationInfo() {
-    return new Promise((resolve) => {
-      fetch('./package.json')
+    return new Promise(resolve => {
+      fetch("./package.json")
         .then(response => response.json())
         .then(json => {
           resolve(json);
@@ -127,7 +138,7 @@ export default Backbone.Router.extend({
   },
 
   onSearchInputChange(searchTerm) {
-    let router = this;
+    const router = this;
 
     if (searchTerm && searchTerm.length > 1) {
       this.searchTrailers(searchTerm)
@@ -135,7 +146,7 @@ export default Backbone.Router.extend({
           router.collection.reset(resultModels);
           router.renderView(router.trailerListView, router.collection);
         })
-        .catch((data, response) => this.onGetDataError(data, response))
+        .catch((data, response) => this.onGetDataError(data, response));
     }
   },
 
@@ -144,28 +155,26 @@ export default Backbone.Router.extend({
   },
 
   renderView(view, data, target) {
-    let $targetContainer = $(target || '#app-container');
+    const $targetContainer = $(target || "#app-container");
     if ($targetContainer) {
       this.collection.isFetchPending = false;
 
       $targetContainer.empty();
       view.render(data);
-      $targetContainer.hide().fadeIn('slow');
+      $targetContainer.hide().fadeIn("slow");
     }
   },
 
   viewTrailerList(filter) {
-    let defaultFilter = 'just_added';
+    const defaultFilter = "just_added";
 
     if (!this.trailerListView) {
       this.trailerListView = new TrailerListView({
-        el: '#app-container'
+        el: "#app-container"
       });
     }
 
-    if (this.navBar) {
-      this.navBar.$el.find('.input-group input').val('');
-    }
+    this.clearSearch();
 
     this.getTrailers(filter || defaultFilter)
       .then(() => this.renderView(this.trailerListView, this.collection))
@@ -175,7 +184,7 @@ export default Backbone.Router.extend({
   viewTrailerInfo(trailerLocation) {
     if (!this.trailerView) {
       this.trailerView = new TrailerView({
-        el: '#app-container'
+        el: "#app-container"
       });
     }
 
@@ -187,15 +196,22 @@ export default Backbone.Router.extend({
   viewAbout() {
     if (!this.aboutView) {
       this.aboutView = new AboutView({
-        el: '#app-container'
+        el: "#app-container"
       });
     }
+
+    this.clearSearch();
 
     this.getApplicationInfo()
       .then(appInfo => this.renderView(this.aboutView, appInfo))
       .catch((data, response) => this.onGetDataError(data, response));
   },
 
-  defaultAction() {
-  }
+  clearSearch() {
+    if (this.navBar) {
+      this.navBar.$el.find(".input-group input").val("");
+    }
+  },
+
+  defaultAction() {}
 });

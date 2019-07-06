@@ -1,41 +1,31 @@
-'use strict';
 // Libs
-import _ from 'underscore';
-import Backbone from 'backbone';
-import Moment from 'moment';
+import _ from "underscore";
+import Backbone from "backbone";
+import Moment from "moment";
 
 // TODO: Manage locale in a global cofig
-const LOCALE = 'en';
+const LOCALE = "en";
 
 export default Backbone.Model.extend({
-  initialize: function (data) {
+  initialize(data) {
     let initData;
 
     if (data) {
-      initData = data.isFeedData ? this.parseFeedData(data) : this.parseCollectionData(data);
+      initData = data.isFeedData
+        ? this.parseFeedData(data)
+        : this.parseCollectionData(data);
       this.set(initData);
     }
   },
 
   formatListForDisplay(list) {
-    return list ? list.join(', ') : '';
+    return list ? list.join(", ") : "";
   },
 
   parseFeedData(data) {
-    let modelObj,
-      heroImages,
-      releaseDate,
-      crew,
-      directors,
-      actors,
-      writers,
-      genres,
-      trailers;
+    const heroImages = data.heros;
 
-    heroImages = data.heros;
-
-
-    modelObj = {
+    const modelObj = {
       backgroundImg: heroImages[1].imageurl || heroImages[0].imageurl
     };
 
@@ -44,80 +34,88 @@ export default Backbone.Model.extend({
     modelObj.rating = data.page.movie_rating;
     modelObj.mappedRating = `rating-${modelObj.rating}`;
 
-    releaseDate = data.page.release_copy;
+    const releaseDate = data.page.release_copy;
 
     if (releaseDate !== undefined) {
-      modelObj.releaseDateTxt = 'In Theatres: ' + releaseDate;
+      modelObj.releaseDateTxt = `In Theatres: ${releaseDate}`;
     } else {
-      modelObj.releaseDateTxt = 'In Theatres Coming Soon';
+      modelObj.releaseDateTxt = "In Theatres Coming Soon";
     }
 
     modelObj.copyright = data.page.copyright;
 
-    crew = data.details.locale[LOCALE].castcrew;
+    const crew = data.details.locale[LOCALE].castcrew;
 
-    actors = crew && crew.actors;
-    modelObj.castListTxt = this.formatListForDisplay(actors.map(actor => actor.name));
+    const actors = crew && crew.actors;
+    modelObj.castListTxt = this.formatListForDisplay(
+      actors.map(actor => actor.name)
+    );
 
-    directors = crew && crew.directors;
-    modelObj.directors = this.formatListForDisplay(directors.map(director => director.name));
+    const directors = crew && crew.directors;
+    modelObj.directors = this.formatListForDisplay(
+      directors.map(director => director.name)
+    );
 
-    writers = crew && crew.writers;
-    modelObj.writerListTxt = this.formatListForDisplay(writers.map(writer => writer.name));
+    const writers = crew && crew.writers;
+    modelObj.writerListTxt = this.formatListForDisplay(
+      writers.map(writer => writer.name)
+    );
 
-    genres = data.details.genres;
-    modelObj.genreListTxt = this.formatListForDisplay(genres.map(genre => genre.name));
+    const { genres } = data.details;
+    modelObj.genreListTxt = this.formatListForDisplay(
+      genres.map(genre => genre.name)
+    );
 
-    trailers = data.clips;
-    modelObj.trailerList = trailers.map(trailer => {
-      let trailerSizes,
-        mappedObj = {
+    const trailers = data.clips;
+    modelObj.trailerList = trailers
+      .map(trailer => {
+        const mappedObj = {
           videoTitle: trailer.title,
           videoThumbnail: trailer.screen,
           videoRuntime: trailer.runtime
         };
 
-      trailerSizes = trailer.versions.enus.sizes;
+        const trailerSizes = trailer.versions.enus.sizes;
 
-      mappedObj.videoTrailerUrl = trailerSizes.hd1080.srcAlt;
+        mappedObj.videoTrailerUrl = trailerSizes.hd1080.srcAlt;
 
-      return mappedObj;
-    }).reverse();
+        return mappedObj;
+      })
+      .reverse();
 
     return modelObj;
   },
 
   parseCollectionData(data) {
-    let trailerLocation,
-      splitUrlArr,
-      posterUrl,
-      posterExtension,
-      rDate,
-      trailerDescList,
-      modelObj,
-      posterAttribute = 'poster',
-      trailerSitePrefix = 'http://trailers.apple.com';
+    let trailerDescList;
+    const posterAttribute = "poster";
+    const trailerSitePrefix = "http://trailers.apple.com";
 
-    trailerLocation = data.location;
+    const trailerLocation = data.location;
 
     // Simplify poster access
-    splitUrlArr = data.poster.split(posterAttribute);
+    const splitUrlArr = data.poster.split(posterAttribute);
 
-    posterUrl = splitUrlArr[0];
-    posterExtension = splitUrlArr[1];
+    const posterUrl = splitUrlArr[0];
+    const posterExtension = splitUrlArr[1];
 
-    modelObj = {
-      posterLarge: posterUrl + posterAttribute + '-large' + posterExtension,
-      posterXLarge: posterUrl + posterAttribute + '-xlarge' + posterExtension,
-      backgroundImg: trailerSitePrefix + trailerLocation + 'images/background.jpg'
+    const modelObj = {
+      posterSmall: `${trailerSitePrefix}${posterUrl +
+        posterAttribute +
+        posterExtension}`,
+      posterLarge: `${posterUrl + posterAttribute}-large${posterExtension}`,
+      posterXLarge: `${posterUrl + posterAttribute}-xlarge${posterExtension}`,
+      backgroundImg: `${trailerSitePrefix}${trailerLocation}images/background.jpg`
     };
 
     // Parse release date
-    rDate = data.releasedate;
+    const rDate = data.releasedate;
     if (rDate !== undefined) {
-      modelObj.releaseDateTxt = 'In Theatres: ' + Moment(rDate).format('MMMM Do, YYYY');
+      modelObj.releaseDateTxt = `In Theatres: ${Moment(rDate).format(
+        "MMMM Do, YYYY"
+      )}`;
     } else {
-      modelObj.releaseDateTxt = 'In Theatres Coming Soon';
+      modelObj.releaseDateTxt = "In Theatres Coming Soon";
     }
 
     // Format genre list
@@ -126,7 +124,11 @@ export default Backbone.Model.extend({
     // Format cast list
     modelObj.castListTxt = this.formatListForDisplay(data.actors);
 
-    modelObj.isExclusive = _.reduce(trailerDescList, item => item && item.exclusive, false);
+    modelObj.isExclusive = _.reduce(
+      trailerDescList,
+      item => item && item.exclusive,
+      false
+    );
     modelObj.trailerList = Array.from(data.trailers);
 
     return modelObj;

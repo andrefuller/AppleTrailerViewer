@@ -6,3 +6,4 @@ fonts.css
 node_modules
 dist
 package-lock.json
+.vscode

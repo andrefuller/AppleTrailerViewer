@@ -3,7 +3,8 @@
 		<div class="details col-md-9 pt-3">
 			<div class="title">
 				<div class="d-flex">
-					<div class="h2 text-uppercase font-weight-bold mb-0 mr-1 text-truncate" data-toggle="tooltip" data-placement="top" title="<%= title %>"><%= title %></div>
+					<div class="h2 text-uppercase font-weight-bold mb-0 mr-1 text-truncate" data-toggle="tooltip"
+						data-placement="top" title="<%= title %>"><%= title %></div>
 					<span class="movie-rating <%= mappedRating %>"><%= rating %></span>
 				</div>
 				<div class="d-flex mb-2">
@@ -45,37 +46,41 @@
 			</div>
 		</div>
 		<div class="sidebar col-md-3 border-top-0 border-right-0 border-botom-0">
-			<div class="h5 text-center pt-3 font-weight-bold">TRAILERS<span class="badge badge-info ml-1"><%= trailerList.length %></span></div>
+			<div class="h5 text-center pt-3 font-weight-bold">TRAILERS<span
+					class="badge badge-info ml-1"><%= trailerList.length %></span></div>
 			<hr />
 			<div class="list-group">
 				<% _.each( trailerList, function(trailerInfo, index, list) { %>
-			  <a href="#"
+				<a href="#"
 					class="video-link d-flex list-group-item list-group-item-action flex-column align-items-start"
-					rel="popover"
-					data-toggle="modal"
-					data-target="#videoModal"
+					rel="popover" data-toggle="modal" data-target="#videoModal"
 					data-video-url="<%- trailerInfo.videoTrailerUrl %>"
 					data-video-type="<%- trailerInfo.videoTrailerType %>">
-					<img class="img-thumbnail" src="<%- trailerInfo.videoThumbnail %>" alt="<%- trailerInfo.videoTitle %>">
+					<img class="img-thumbnail" src="<%- trailerInfo.videoThumbnail %>"
+						alt="<%- trailerInfo.videoTitle %>">
 					<div class="w-100 mt-2 d-flex">
 						<small class="text-muted mr-auto"><%- trailerInfo.videoTitle %></small>
 						<small class="text-muted ml-2"><%- trailerInfo.videoRuntime %></small>
 					</div>
-			  </a>
+				</a>
 				<% }); %>
 			</div>
 		</div>
 	</div>
 </div>
 
-<div id="videoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="videoModal" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
+<div class="modal fade modal-fullscreen" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModalTitle"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
 			<div class="modal-body">
 				<video class="video w-100 h-100" preload="auto" autoplay controls>
 					<source>
 				</video>
 			</div>
-    </div>
-  </div>
+		</div>
+	</div>
 </div>

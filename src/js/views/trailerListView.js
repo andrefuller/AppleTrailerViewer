@@ -1,68 +1,74 @@
-'use strict';
 // Libs
-import $ from 'jquery';
-import _ from 'underscore';
-import Marionette from 'backbone.marionette'
+import $ from "jquery";
+import _ from "underscore";
+import Marionette from "backbone.marionette";
 
-import template from '../templates/trailerListView.hbs';
+import template from "../templates/trailerListView.hbs";
 
 export default Marionette.View.extend({
-
   template: _.template(template()),
 
   events: {
-    'click .pagination .page-link': 'getPage'
+    "click .pagination .page-link": "getPage"
   },
 
   navList: [
     {
-      label: 'Just Added',
-      filter: 'just_added'
-    }, {
-      label: 'Most Popular',
-      filter: 'most_pop'
-    }, {
-      label: 'Exclusive',
-      filter: 'exclusive'
-    }, {
-      label: 'Genres',
-      filter: 'genres'
-    }, {
-      label: 'Studios',
-      filter: 'studios'
+      label: "Just Added",
+      filter: "just_added"
+    },
+    {
+      label: "Most Popular",
+      filter: "most_pop"
+    },
+    {
+      label: "Exclusive",
+      filter: "exclusive"
+    },
+    {
+      label: "Genres",
+      filter: "genres"
+    },
+    {
+      label: "Studios",
+      filter: "studios"
     }
   ],
 
   render(coll) {
-    let activeNavList,
-      currentCollection,
-      trailers,
-      groups,
-      pageData;
+    let groups;
+    let pageData;
 
-    currentCollection = this.collection = this.collection || coll;
+    // eslint-disable-next-line no-multi-assign
+    const currentCollection = (this.collection = this.collection || coll);
 
-    activeNavList = [...this.navList].map(elem => {
+    const activeNavList = [...this.navList].map(elem => {
+      const output = { ...elem };
       if (elem.filter === currentCollection.currentFilter)
-        elem.active = 'active';
-      else
-        elem.active = ''
+        output.active = "active";
+      else output.active = "";
 
-      return elem;
+      return output;
     });
 
     const buildPagingData = () => {
-      let pageInfo = {};
+      const pageInfo = {};
 
-      pageInfo.list = Array.from(new Array(currentCollection.state.totalPages), (x, i) => {
-        let mappedIndex = i + 1;
+      pageInfo.list = Array.from(
+        new Array(currentCollection.state.totalPages),
+        (x, i) => {
+          const mappedIndex = i + 1;
 
-        return {
-          index: mappedIndex,
-          label: mappedIndex,
-          active: mappedIndex === currentCollection.state.currentPage ? 'active' : ''
+          return {
+            index: mappedIndex,
+            label: mappedIndex,
+            active:
+              mappedIndex === currentCollection.state.currentPage
+                ? "active"
+                : ""
+          };
         }
-      });
+      );
 
       pageInfo.nextPageIndex = currentCollection.state.currentPage + 1;
       pageInfo.previousPageIndex = currentCollection.state.currentPage - 1;
@@ -70,14 +76,14 @@ export default Marionette.View.extend({
       pageInfo.hasPreviousPage = currentCollection.hasPreviousPage();
 
       return pageInfo;
-    }
+    };
 
-    trailers = currentCollection.toJSON();
+    const trailers = currentCollection.toJSON();
     switch (currentCollection.currentFilter) {
-      case 'genres':
+      case "genres":
         groups = _.groupBy(trailers, item => item.genre[0]);
         break;
-      case 'studios':
+      case "studios":
         groups = _.groupBy(trailers, item => item.studio);
         break;
       default:
@@ -85,12 +91,14 @@ export default Marionette.View.extend({
         break;
     }
 
-    $(this.el).html(this.template({
-      navItems: activeNavList,
-      paging: pageData,
-      trailers,
-      groups
-    }));
+    $(this.el).html(
+      this.template({
+        navItems: activeNavList,
+        paging: pageData,
+        trailers,
+        groups
+      })
+    );
 
     return this;
   },
@@ -98,8 +106,8 @@ export default Marionette.View.extend({
   getPage(event) {
     event.preventDefault();
 
-    let $page = $(event.target);
-    let pageIndex = $page.data('pageIndex');
+    const $page = $(event.target);
+    const pageIndex = $page.data("pageIndex");
 
     if (this.collection) {
       this.collection.getPage(pageIndex);

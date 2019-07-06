@@ -1,28 +1,26 @@
-'use strict';
 // Libs
-import Backbone from 'backbone';
+import Backbone from "backbone";
 
 // eslint-disable-next-line
 import BackbonePaginator from 'backbone.paginator'
 
 // Models
-import TrailerModel from '../models/trailer';
+import TrailerModel from "../models/trailer";
 
 export default Backbone.PageableCollection.extend({
   model: TrailerModel,
-  mode: 'infinite',
+  mode: "infinite",
 
-  urlPrefix: 'home/feeds',
+  urlPrefix: "home/feeds",
 
-  currentFilter: 'just_added',
+  currentFilter: "just_added",
 
   state: {
     pageSize: 40
   },
 
   url() {
-    let output = `${this.urlPrefix}/${this.currentFilter}.json`;
-    return output;
+    return `http://trailers.apple.com/trailers/${this.urlPrefix}/${this.currentFilter}.json`;
   },
 
   parse(response) {
@@ -30,6 +28,9 @@ export default Backbone.PageableCollection.extend({
       response.query &&
       response.query.results &&
       response.query.results.json &&
-      response.query.results.json.json ) || Array.isArray(response) ? response : [];
+      response.query.results.json.json) ||
+      Array.isArray(response)
+      ? response
+      : [];
   }
 });

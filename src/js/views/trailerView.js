@@ -1,18 +1,15 @@
-'use strict';
 // Libs
-import $ from 'jquery';
-import _ from 'underscore';
-import Backbone from 'backbone';
-import Marionette from 'backbone.marionette'
+import $ from "jquery";
+import _ from "underscore";
+import Marionette from "backbone.marionette";
 
-import template from '../templates/trailerView.hbs';
+import template from "../templates/trailerView.hbs";
 
 export default Marionette.View.extend({
-
   template: _.template(template()),
 
   events: {
-    'click .video-link': 'showModal'
+    "click .video-link": "showModal"
   },
 
   render(model) {
@@ -20,19 +17,19 @@ export default Marionette.View.extend({
   },
 
   showModal(event) {
-    let link = $(event.currentTarget);
-    let videoTitle = link.data('videoTitle');
-    let videoUrl = link.data('videoUrl');
-    let modal = $('#videoModal');
-    let video = modal.find('.video').get()[0];
-    let videoSrc = modal.find('source');
+    const link = $(event.currentTarget);
+    const videoTitle = link.data("videoTitle");
+    const videoUrl = link.data("videoUrl");
+    const modal = $("#videoModal");
+    const video = modal.find(".video").get()[0];
+    const videoSrc = modal.find("source");
 
-    modal.find('.modal-title').text(videoTitle);
-    modal.one('hide.bs.modal', (e) => {
+    modal.find(".modal-title").text(videoTitle);
+    modal.one("hide.bs.modal", () => {
       video.pause();
     });
 
-    videoSrc.attr('src', videoUrl);
+    videoSrc.attr("src", videoUrl);
     video.load();
     video.play();
   }

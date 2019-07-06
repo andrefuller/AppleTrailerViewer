@@ -2,7 +2,7 @@ $fa-font-path: "~font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome.scss";
 
 $suggestion-hover-color: #fafafa;
-$suggestion-highlight-color: #FFC;
+$suggestion-highlight-color: #ffc;
 
 html {
   position: relative;
@@ -45,7 +45,7 @@ body {
       margin: 2px 0;
       background-color: $white;
       border: 1px solid rgba(0, 0, 0, 0.2);
-      box-shadow: 0 5px 10px rgba(0,0,0,.2);
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 
       .tt-dropdown-menu {
         max-height: 150px;
@@ -70,7 +70,6 @@ body {
           float: left;
           width: 50px;
           height: 70px;
-          display: inline-block;
         }
 
         .info {
@@ -159,8 +158,12 @@ body {
       transform: scale(1.1);
     }
 
-    .paginationContainer .pagination {
-      display: inline-flex;
+    .paginationContainer {
+      z-index: 0;
+
+      .pagination {
+        display: inline-flex;
+      }
     }
   }
 
@@ -170,7 +173,7 @@ body {
       vertical-align: middle;
       width: 60px;
       height: 21px;
-      background: url("./src/assets/images/movie_ratings.svg") no-repeat 0 0;
+      background: url("../assets/images/movie_ratings.svg") no-repeat 0 0;
       background-size: 204px 600px;
       text-indent: 100%;
       direction: ltr;
@@ -227,8 +230,19 @@ body {
   }
 
   #videoModal {
+    .modal-dialog {
+      min-width: 100%;
+      margin: 0;
+    }
+
+    .modal-header {
+      border-bottom: none;
+      color: $white;
+    }
+
     .modal-content {
       background-color: $black;
+      min-height: 100vh;
     }
 
     video {
@@ -247,7 +261,7 @@ body {
       padding-bottom: 3rem;
 
       .card {
-        box-shadow: 0 0 5px rgba(0,0,0,.2);
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
         margin: 9px;
         border: 0;
 
